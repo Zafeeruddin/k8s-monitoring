@@ -1,0 +1,29 @@
+prometheus:
+  service:
+    type: NodePort
+    nodePort: 30090
+  prometheusSpec:
+    externalUrl: http://your_domain/internal-tools/prometheus
+    routePrefix: /
+    web:
+      external-url: http://your_domain/internal-tools/prometheus
+grafana:
+  service:
+    type: NodePort
+    nodePort: 31191
+  env:
+    GF_SERVER_ROOT_URL: "http://your_domain/internal-tools/grafana"
+    GF_SERVER_SERVE_FROM_SUB_PATH: "false"
+    GF_SERVER_DOMAIN: "your_domain"
+  grafana.ini:
+    server:
+      serve_from_sub_path: false
+      domain: "your_domain"
+      root_url: http://your_domain/internal-tools/grafana
+alertmanager:
+  service:
+    type: NodePort
+    nodePort: 30654
+  alertmanagerSpec:
+    externalUrl: http://your_domain/internal-tools/alertmanager/
+    routePrefix: /
