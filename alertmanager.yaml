@@ -7,7 +7,13 @@ route:
   group_wait: 30s
   group_interval: 5m
   repeat_interval: 3h
+
+  # 👇 Add a child route to send only your node alerts to Teams
   routes:
+  - matchers:
+    - alertname =~ "NodeDown|HighCPUUsage|HighMemoryUsage|LowDiskSpace"
+    receiver: "teams-notifications"
+
   - matchers:
     - alertname = "Watchdog"
     receiver: "null"
@@ -16,7 +22,8 @@ receivers:
   - name: "teams-notifications"
     webhook_configs:
       - send_resolved: true
-        url: "http://prom2teams.default.svc.cluster.local:8089"
+        url: "http://prom2teams.monitoring.svc.cluster.local:8089"
+
   - name: "null"
 
 inhibit_rules:
